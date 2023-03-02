@@ -108,7 +108,7 @@ const CurrentWeather = (props) => {
         {weatherData.name}, {weatherData.sys.country}
       </p>
       <div className={weatherStyle["icon-temp-container"]}>
-        <img
+        <img className={weatherStyle["weather-img"]}
           src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
         />
         <p className={weatherStyle["weather-temp"]}>{temp}°C</p>

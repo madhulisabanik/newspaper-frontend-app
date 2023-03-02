@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MDBCard, MDBCardBody, MDBCardHeader, MDBCardFooter, MDBCardTitle, MDBCardText } from 'mdb-react-ui-kit';
 
-export default function NewsCard() {
+export default function NewsCard({newsMetaInfo}) {
+    useEffect(() => { console.log(newsMetaInfo.category) }, [newsMetaInfo]);
     return (
         <>
             <div className='d-flex justify-content-center'>
