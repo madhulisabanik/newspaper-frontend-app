@@ -5,6 +5,7 @@ import Register from "./Components/Register/Register";
 import NewsPage from "./Components/NewsPage/NewsPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import Dashboard from "./Components/Dashboard/Dashboard";
 
 function App() {
   const [userstate, setUserState] = useState({});
@@ -16,12 +17,9 @@ function App() {
             path="/dashboard"
             element={
               userstate && userstate._id ? (
-                <Profile
-                  setUserState={setUserState}
-                  username={userstate.fname}
-                />
-              ) : (
                 <Login setUserState={setUserState} />
+              ) : (
+                <Dashboard/>
               )
             }
           ></Route>
