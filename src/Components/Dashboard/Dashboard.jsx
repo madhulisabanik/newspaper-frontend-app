@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import Modal from '../Modal/Modal';
+import axios from 'axios';
+import { useNavigate, NavLink } from "react-router-dom";
 
-export default function Dashboard() {
+export default function Dashboard({userstate, setUserState}) {
+    const navigate = useNavigate();
+    const [newsList, setNewsList] = useState([]);
     const [basicModal, setBasicModal] = useState(false);
     const [newsObject, setNewsObject] = useState({
         title: "",
@@ -12,137 +16,72 @@ export default function Dashboard() {
     });
     const [isEdit, setIsEdit] = useState(false);
     const editModal = (e) => {
-        console.log(e);
         setIsEdit(true);
         setBasicModal(!basicModal);
-        setNewsObject({
-            title: "this is clicked from edit",
-            description: "test edit modal with edit data",
-            newsCategory: "SPORTS",
-            url: "localhost:3000"
-        })
+        setNewsObject({...newsList.find((news) => news._id === e.target.id)})
     }
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/news")
+            .then((res) => {
+                const allNewsData = res.data;
+                setNewsList([...allNewsData]);
+            })
+            .catch(e => console.log(e));
+    }, [])
+
     return (
         <>
             <header>
                 <div className='p-5 text-center bg-light'>
                     <h1 className='mb-3'>Welcome to the admin dashboard!</h1>
                     <h4 className='mb-3'>where you can see the added news and manipulate them, Please click on the below button to add more news</h4>
-                    <a className='btn btn-primary' role='button' style={{ color: "white" }} onClick={() => {setBasicModal(!basicModal); setIsEdit(false)}}>
+                    <a className='btn btn-primary' role='button' style={{ color: "white" }} onClick={() => { setBasicModal(!basicModal); setIsEdit(false) }}>
                         Add new news
+                    </a>
+                    <a className='btn btn-danger' role='button' style={{ color: "white", float: 'right' }} onClick={() => {setUserState({}); navigate("/login", { replace: true });}}>
+                        Logout
                     </a>
                 </div>
             </header>
             <MDBTable align='middle'>
                 <MDBTableHead>
                     <tr>
-                        <th scope='col'>Name</th>
                         <th scope='col'>Title</th>
-                        <th scope='col'>Status</th>
-                        <th scope='col'>Position</th>
+                        <th scope='col'>Description</th>
+                        <th scope='col'>News Category</th>
+                        <th scope='col'>URL</th>
                         <th scope='col'>Actions</th>
                     </tr>
                 </MDBTableHead>
                 <MDBTableBody>
-                    <tr>
-                        <td>
-                            <div className='d-flex align-items-center'>
-                                <img
-                                    src='https://mdbootstrap.com/img/new/avatars/8.jpg'
-                                    alt=''
-                                    style={{ width: '45px', height: '45px' }}
-                                    className='rounded-circle'
-                                />
-                                <div className='ms-3'>
-                                    <p className='fw-bold mb-1'>John Doe</p>
-                                    <p className='text-muted mb-0'>john.doe@gmail.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p className='fw-normal mb-1'>Software engineer</p>
-                            <p className='text-muted mb-0'>IT department</p>
-                        </td>
-                        <td>
-                            <MDBBadge color='success' pill>
-                                Active
-                            </MDBBadge>
-                        </td>
-                        <td>Senior</td>
-                        <td>
-                            <MDBBtn color='link' rounded size='sm' onClick={(e) => { console.log(e) }}>
-                                Edit
-                            </MDBBtn>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div className='d-flex align-items-center'>
-                                <img
-                                    src='https://mdbootstrap.com/img/new/avatars/6.jpg'
-                                    alt=''
-                                    style={{ width: '45px', height: '45px' }}
-                                    className='rounded-circle'
-                                />
-                                <div className='ms-3'>
-                                    <p className='fw-bold mb-1'>Alex Ray</p>
-                                    <p className='text-muted mb-0'>alex.ray@gmail.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p className='fw-normal mb-1'>Consultant</p>
-                            <p className='text-muted mb-0'>Finance</p>
-                        </td>
-                        <td>
-                            <MDBBadge color='primary' pill>
-                                Onboarding
-                            </MDBBadge>
-                        </td>
-                        <td>Junior</td>
-                        <td>
-                            <MDBBtn color='link' rounded size='sm' onClick={(e) => { console.log(e) }}>
-                                Edit
-                            </MDBBtn>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div className='d-flex align-items-center'>
-                                <img
-                                    src='https://mdbootstrap.com/img/new/avatars/7.jpg'
-                                    alt=''
-                                    style={{ width: '45px', height: '45px' }}
-                                    className='rounded-circle'
-                                />
-                                <div className='ms-3'>
-                                    <p className='fw-bold mb-1'>Kate Hunington</p>
-                                    <p className='text-muted mb-0'>kate.hunington@gmail.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p className='fw-normal mb-1'>Designer</p>
-                            <p className='text-muted mb-0'>UI/UX</p>
-                        </td>
-                        <td>
-                            <MDBBadge color='warning' pill>
-                                Awaiting
-                            </MDBBadge>
-                        </td>
-                        <td>Senior</td>
-                        <td>
-                            <MDBBtn color='link' rounded size='sm' onClick={editModal}>
-                                Edit
-                            </MDBBtn>
-                        </td>
-                    </tr>
+                    {newsList.length > 0 ? newsList.map((news) => {
+                        return <tr>
+                            <td>
+                                <p className='fw-bold mb-1'>{news.title}</p>
+                            </td>
+                            <td>
+                                <p className='fw-normal mb-1'>{news.description}</p>
+                            </td>
+                            <td>
+                                <MDBBadge color='success' pill>
+                                    {news.newsCategory}
+                                </MDBBadge>
+                            </td>
+                            <td>{news.url}</td>
+                            <td>
+                                <button id={news._id} className="ripple ripple-surface ripple-surface-dark btn btn-link btn-rounded btn-sm" role="button" onClick={editModal}>Edit</button>
+                                <button id={news._id} className="ripple ripple-surface ripple-surface-dark btn btn-link btn-rounded btn-sm" role="button" onClick={()=> {console.log("delete")}}>Delete</button>
+                            </td>
+                        </tr>
+                    }) : ""}
                 </MDBTableBody>
             </MDBTable>
-            <Modal 
-                basicModal={basicModal} setBasicModal={setBasicModal} 
-                newsObject={newsObject} setNewsObject={setNewsObject} 
-                isEdit={isEdit} setIsEdit={setIsEdit}/>
+            <Modal
+                basicModal={basicModal} setBasicModal={setBasicModal}
+                newsObject={newsObject} setNewsObject={setNewsObject}
+                isEdit={isEdit} setIsEdit={setIsEdit}
+                token={userstate.token}
+                setNewsList={setNewsList} />
         </>
 
     );

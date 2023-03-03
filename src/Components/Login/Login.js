@@ -45,10 +45,10 @@ const Login = ({ setUserState }) => {
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(user);
-      axios.post("http://localhost:9002/login", user).then((res) => {
-        alert(res.data.message);
-        setUserState(res.data.user);
-        navigate("/", { replace: true });
+      axios.post("http://localhost:8080/api/users/signin", user).then((res) => {
+        console.log(res.data)
+        setUserState({token: res.data.token});
+        navigate("/dashboard", { replace: true });
       });
     }
   }, [formErrors]);

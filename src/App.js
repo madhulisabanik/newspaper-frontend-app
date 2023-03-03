@@ -16,10 +16,10 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              userstate && userstate._id ? (
-                <Login setUserState={setUserState} />
+              userstate && userstate.token ? (
+                <Dashboard userstate={userstate} setUserState={setUserState}/>
               ) : (
-                <Dashboard/>
+                <Login setUserState={setUserState} />
               )
             }
           ></Route>
