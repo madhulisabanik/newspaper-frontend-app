@@ -26,18 +26,31 @@ export default function NewsCard({ newsMetaInfo }) {
 
         for (let index = 0; index < newsDataLimit; index++) {
             const news = newsData[index];
+            const dateDiffindays = date_diff_indays(news.createdAt);
+            const newsCreated = dateDiffindays === 0 ? "Today" : dateDiffindays + " days ago";
             content.push(
                 <MDBCard alignment='center'>
                     <MDBCardBody>
                         <MDBCardTitle><Link to={news.url} target="_blank">{news.title}</Link></MDBCardTitle>
                         <MDBCardText>{news.description}</MDBCardText>
                     </MDBCardBody>
-                    <MDBCardFooter className='text-muted'>{news.createdAt}</MDBCardFooter>
+                    <MDBCardFooter className='text-muted'>{newsCreated}</MDBCardFooter>
                 </MDBCard>
             )
         }
         return content;
     }
+
+    const date_diff_indays = function (getDate) {
+        const dt1 = new Date(getDate);
+        const dt2 = new Date();
+        return Math.floor(
+            (Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
+                Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /
+            (1000 * 60 * 60 * 24)
+        );
+    };
+
     return (
         <div className='d-flex justify-content-center'>
             {newsData.length > 0 ? newsCardList() : "Loading..."}
