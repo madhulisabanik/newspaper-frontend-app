@@ -15,6 +15,20 @@ To install all the dependencies available in package.json
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
+
+To setup the project using Docker:
+
+1. First setup the Backend:
+
+### `docker pull madhulisa/nodejs-demo-app:1.1`
+### `docker run -d -p 8080:8080 madhulisa/nodejs-demo-app:1.1`
+
+
+2. Then setup the Frontend:
+
+### `docker pull madhulisa/newspaper-frontend-app:1.0`
+### `docker run -d -p 3000:3000 madhulisa/newspaper-frontend-app:1.0`
+
 # News Listing Page will look like
 
 ![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/news_listing_page.png)
