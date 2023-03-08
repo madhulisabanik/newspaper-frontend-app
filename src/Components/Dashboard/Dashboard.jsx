@@ -4,7 +4,10 @@ import Modal from '../Modal/Modal';
 import axios from 'axios';
 import { useNavigate, NavLink } from "react-router-dom";
 
-export default function Dashboard({userstate, setUserState}) {
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+export default function Dashboard({ userstate, setUserState }) {
     const navigate = useNavigate();
     const [newsList, setNewsList] = useState([]);
     const [basicModal, setBasicModal] = useState(false);
@@ -18,7 +21,7 @@ export default function Dashboard({userstate, setUserState}) {
     const editModal = (e) => {
         setIsEdit(true);
         setBasicModal(!basicModal);
-        setNewsObject({...newsList.find((news) => news._id === e.target.id)})
+        setNewsObject({ ...newsList.find((news) => news._id === e.target.id) })
     }
     useEffect(() => {
         axios.get("http://localhost:8080/api/news")
@@ -28,6 +31,45 @@ export default function Dashboard({userstate, setUserState}) {
             })
             .catch(e => console.log(e));
     }, [])
+    const deleteNews = (newsId) => {
+        console.log(newsId);
+        axios.delete(`http://localhost:8080/api/news/${newsId}`, {
+            headers: {
+                Authorization: `Bearer ${userstate.token}`
+            }
+        })
+            .then((res) => {
+                console.log("delete response", res);
+                if (res.status === 200) {
+                    toast.success('News deleted succesfully!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                    setNewsList((prev) => {
+                        return [...prev.filter((news) => news._id !== newsId)];
+                    })
+                }
+                else {
+                    toast.error('Some error occurred!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                }
+            })
+            .catch(e => console.log("error", e))
+    }
 
     return (
         <>
@@ -38,7 +80,7 @@ export default function Dashboard({userstate, setUserState}) {
                     <a className='btn btn-primary' role='button' style={{ color: "white" }} onClick={() => { setBasicModal(!basicModal); setIsEdit(false) }}>
                         Add new news
                     </a>
-                    <a className='btn btn-danger' role='button' style={{ color: "white", float: 'right' }} onClick={() => {setUserState({}); navigate("/login", { replace: true });}}>
+                    <a className='btn btn-danger' role='button' style={{ color: "white", float: 'right' }} onClick={() => { setUserState({}); navigate("/login", { replace: true }); }}>
                         Logout
                     </a>
                 </div>
@@ -70,7 +112,7 @@ export default function Dashboard({userstate, setUserState}) {
                             <td>{news.url}</td>
                             <td>
                                 <button id={news._id} className="ripple ripple-surface ripple-surface-dark btn btn-link btn-rounded btn-sm" role="button" onClick={editModal}>Edit</button>
-                                <button id={news._id} className="ripple ripple-surface ripple-surface-dark btn btn-link btn-rounded btn-sm" role="button" onClick={()=> {console.log("delete")}}>Delete</button>
+                                <button id={news._id} className="ripple ripple-surface ripple-surface-dark btn btn-link btn-rounded btn-sm" role="button" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteNews(news._id) }}>Delete</button>
                             </td>
                         </tr>
                     }) : ""}
@@ -82,6 +124,7 @@ export default function Dashboard({userstate, setUserState}) {
                 isEdit={isEdit} setIsEdit={setIsEdit}
                 token={userstate.token}
                 setNewsList={setNewsList} />
+            <ToastContainer />
         </>
 
     );
