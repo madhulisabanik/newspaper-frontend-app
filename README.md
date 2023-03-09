@@ -16,7 +16,7 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
-To setup the project using Docker:
+## Steps to setup the project using Docker
 
 1. First setup the Backend:
 
@@ -29,7 +29,7 @@ To setup the project using Docker:
 ### `docker pull madhulisa/newspaper-frontend-app:1.0`
 ### `docker run -d -p 3000:3000 madhulisa/newspaper-frontend-app:1.0`
 
-# News Listing Page will look like
+## News Listing page -
 
 ![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/news_listing_page.png)
 

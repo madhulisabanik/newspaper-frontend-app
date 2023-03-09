@@ -31,7 +31,7 @@ export default function NewsCard({ newsMetaInfo }) {
             content.push(
                 <MDBCard alignment='center'>
                     <MDBCardBody>
-                        <MDBCardTitle><Link to={news.url} target="_blank">{news.title}</Link></MDBCardTitle>
+                        <MDBCardTitle><Link to={news.url} target="_blank" style={{color: "#000000"}}>{news.title}</Link></MDBCardTitle>
                         <MDBCardText>{news.description}</MDBCardText>
                     </MDBCardBody>
                     <MDBCardFooter className='text-muted'>{newsCreated}</MDBCardFooter>
