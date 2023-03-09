@@ -29,7 +29,32 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 ### `docker pull madhulisa/newspaper-frontend-app:1.0`
 ### `docker run -d -p 3000:3000 madhulisa/newspaper-frontend-app:1.0`
 
+
+## Home page -
+
+![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/homePage.png)
+
+## About Us page -
+
+![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/aboutUs.PNG)
+
+## Contact Us page -
+
+![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/contactUs.PNG)
+
+## Login page -
+
+![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/login.PNG)
+
+## Registration page -
+
+![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/register.jpg)
+
 ## News Listing page -
 
 ![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/news_listing_page.png)
+
+## Add news -
+
+![ScreenShot](https://raw.github.com/madhulisabanik/newspaper-frontend-app/main/ProjectScreenshots/addNews.jpg)
 
